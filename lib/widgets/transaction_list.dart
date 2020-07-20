@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  Function deleteTx;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class TransactionList extends StatelessWidget {
             child: ListView.builder(
               itemBuilder: (context, index) {
                 return Card(
-                  elevation: 3,
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
                   child: Row(
                     children: <Widget>[
                       Container(
@@ -57,23 +59,36 @@ class TransactionList extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              transactions[index].title,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                transactions[index].title,
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Text(
-                            DateFormat.yMMMMEEEEd()
-                                .format(transactions[index].date),
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                          ),
-                        ],
+                            Text(
+                              DateFormat.yMMMMEEEEd()
+                                  .format(transactions[index].date),
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_forever,
+                          //color: Colors.grey,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onPressed: () {
+                          deleteTx(transactions[index].id);
+                        },
+                      )
                     ],
                   ),
                 );

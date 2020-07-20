@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 # PersonalFinance
 
+<<<<<<< HEAD
 A new Flutter project.
 
 ## Getting Started
@@ -19,3 +20,6 @@ samples, guidance on mobile development, and a full API reference.
 # Personal_Finance_App
 App to track your personal transactions written in flutter
 >>>>>>> 0c8b5a26f89facdf088a59594bf2e6a84fc438f1
+=======
+A flutter project for tracking your personal transactions
+>>>>>>> 1c230b4def1fccc9eb817c0b80b17f0886e62395
