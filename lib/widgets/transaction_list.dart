@@ -2,8 +2,9 @@ import 'package:PersonalFinance/models/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
+  final List<Transactions> transactions;
   Function deleteTx;
 
   TransactionList(this.transactions, this.deleteTx);
@@ -14,7 +15,6 @@ class TransactionList extends StatelessWidget {
         ? Column(
             children: <Widget>[
               Container(
-                height: 300,
                 child: Image.asset(
                   'assets/images/emptyList.png',
                   fit: BoxFit.cover,
