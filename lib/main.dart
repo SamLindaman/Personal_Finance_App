@@ -10,6 +10,8 @@ import './widgets/transaction_list.dart';
 import './models/transactions.dart';
 import './models/database_helper.dart';
 
+// TODO: Set a weekly budget and color code transaction amounts in the chart
+
 var range = new Random();
 
 void main() {
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
         accentColor: Colors.grey[200],
+        errorColor: Colors.red[700],
       ),
       home: MyHomePage(),
     );
@@ -114,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //get info from database and fill _transactions list
     fetchAndSetTransactions();
     final _appBarVar = AppBar(
+      //leading: IconButton(icon: Icon(Icons.attach_money), onPressed: () => {}),
       title: Text('Personal Finance'),
       actions: <Widget>[
         IconButton(
@@ -129,20 +133,20 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             Container(
-                height: (MediaQuery.of(context).size.height -
-                        _appBarVar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.27,
+                // height: (MediaQuery.of(context).size.height -
+                //         _appBarVar.preferredSize.height -
+                //         MediaQuery.of(context).padding.top) *
+                //     0.25,
                 child: Chart(_transactions)),
             Container(
-                height: (MediaQuery.of(context).size.height -
-                        _appBarVar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.73,
-                child:
-                    TransactionList(_recentTransactions, _deleteTransaction)),
+              child: TransactionList(_recentTransactions, _deleteTransaction),
+            ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(height: 1),
+        color: Theme.of(context).primaryColor,
       ),
       floatingActionButton: Platform.isIOS
           ? Container()

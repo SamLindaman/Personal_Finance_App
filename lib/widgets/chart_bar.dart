@@ -11,9 +11,16 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FittedBox(
-          child: Text('\$${spendingAmount.toStringAsFixed(0)}'),
-        ),
+        spendingAmount > 50
+            ? FittedBox(
+                child: Text(
+                  '\$${spendingAmount.toStringAsFixed(0)}',
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                ),
+              )
+            : FittedBox(
+                child: Text('\$${spendingAmount.toStringAsFixed(0)}'),
+              ),
         SizedBox(height: 5),
         Container(
           height: 50,
@@ -28,20 +35,37 @@ class ChartBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              FractionallySizedBox(
-                heightFactor: spendingPctOfTotal,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              )
+              //if the spending amount for a day is over $50
+              //make the error bar red instead of purple.
+              spendingAmount > 50
+                  ? FractionallySizedBox(
+                      heightFactor: spendingPctOfTotal,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).errorColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    )
+                  : FractionallySizedBox(
+                      heightFactor: spendingPctOfTotal,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    )
             ],
           ),
         ),
         SizedBox(height: 5),
-        Text(title),
+        spendingAmount < 50
+            ? Text(title)
+            : Text(
+                title,
+                style: TextStyle(color: Theme.of(context).errorColor),
+              ),
       ],
     );
   }

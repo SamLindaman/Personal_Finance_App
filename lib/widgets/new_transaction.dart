@@ -59,19 +59,19 @@ class _NewTransactionState extends State<NewTransaction> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           TextField(
+            decoration:
+                InputDecoration(labelText: 'Amount', hintText: 'numbers only'),
+            controller: _amountController,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            onSubmitted: (_) => _submitData(),
+          ),
+          TextField(
             decoration: InputDecoration(
               labelText: 'Title',
               hintText: 'what did you buy?',
             ),
             controller: _titleController,
-            onSubmitted: (_) => _submitData(),
-          ),
-          TextField(
-            decoration:
-                InputDecoration(labelText: 'Amount', hintText: 'numbers only'),
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_) => _submitData(),
+            //onSubmitted: (_) => _submitData(),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
