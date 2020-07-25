@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:PersonalFinance/widgets/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './widgets/chart.dart';
 import './widgets/new_transaction.dart';
@@ -14,7 +16,7 @@ import './models/database_helper.dart';
 
 var range = new Random();
 
-void main() {
+Future<void> main() async {
   //Set device orientation so that landscape mode is dissabled
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -87,8 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
       id: newId,
     );
 
-    //await dbHelper.insert(newTx);
-    //print('inserted ${newTx.title}');
     setState(() {
       _transactions.add(newTx);
     });
@@ -112,12 +112,33 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+/*
+  void _startSaveBudget(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return Budget(_saveBudget);
+      },
+    );
+  }
+
+  Future<void> _saveBudget(double value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'my_double_key';
+    await prefs.setDouble(key, value);
+    print('saved $value');
+  }
+*/
   @override
   Widget build(BuildContext context) {
     //get info from database and fill _transactions list
     fetchAndSetTransactions();
+
+    //create the App Bar in a variable to be called in the scaffold
     final _appBarVar = AppBar(
-      //leading: IconButton(icon: Icon(Icons.attach_money), onPressed: () => {}),
+      //leading: IconButton(
+      //    icon: Icon(Icons.attach_money),
+      //    onPressed: () => _startSaveBudget(context)),
       title: Text('Personal Finance'),
       actions: <Widget>[
         IconButton(

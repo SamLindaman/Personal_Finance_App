@@ -1,3 +1,9 @@
+/**
+ * This widget is meant to create a chart for the last 7 days that displays
+ * the amount spent on each day, and makes the height of each bar relative 
+ * to the total amount spent through the week
+ */
+
 import 'package:PersonalFinance/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

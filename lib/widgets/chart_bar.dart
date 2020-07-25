@@ -11,7 +11,7 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        spendingAmount > 50
+        spendingAmount >= 50
             ? FittedBox(
                 child: Text(
                   '\$${spendingAmount.toStringAsFixed(0)}',
@@ -37,7 +37,7 @@ class ChartBar extends StatelessWidget {
               ),
               //if the spending amount for a day is over $50
               //make the error bar red instead of purple.
-              spendingAmount > 50
+              spendingAmount >= 50
                   ? FractionallySizedBox(
                       heightFactor: spendingPctOfTotal,
                       child: Container(
@@ -60,7 +60,7 @@ class ChartBar extends StatelessWidget {
           ),
         ),
         SizedBox(height: 5),
-        spendingAmount < 50
+        spendingAmount <= 50
             ? Text(title)
             : Text(
                 title,

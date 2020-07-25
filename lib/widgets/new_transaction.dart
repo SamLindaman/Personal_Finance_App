@@ -28,7 +28,6 @@ class _NewTransactionState extends State<NewTransaction> {
         amountEntered,
         dateEntered,
       );
-
       Navigator.of(context).pop();
     }
   }
