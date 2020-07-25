@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:PersonalFinance/widgets/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +10,9 @@ import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
 import './models/transactions.dart';
 import './models/database_helper.dart';
+import './widgets/budget.dart';
 
+// ignore: todo
 // TODO: Set a weekly budget and color code transaction amounts in the chart
 
 var range = new Random();
@@ -112,7 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-/*
   void _startSaveBudget(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -125,10 +125,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _saveBudget(double value) async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'my_double_key';
-    await prefs.setDouble(key, value);
-    print('saved $value');
+    prefs.setDouble(key, value);
+
+    if (prefs.containsKey(key)) {
+      print('saved $value');
+    } else {
+      print("ehhhh");
+    }
   }
-*/
+
   @override
   Widget build(BuildContext context) {
     //get info from database and fill _transactions list
@@ -136,9 +141,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //create the App Bar in a variable to be called in the scaffold
     final _appBarVar = AppBar(
-      //leading: IconButton(
-      //    icon: Icon(Icons.attach_money),
-      //    onPressed: () => _startSaveBudget(context)),
+      leading: IconButton(
+          icon: Icon(Icons.attach_money),
+          onPressed: () => _startSaveBudget(context)),
       title: Text('Personal Finance'),
       actions: <Widget>[
         IconButton(
