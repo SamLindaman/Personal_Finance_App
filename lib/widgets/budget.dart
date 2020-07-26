@@ -1,5 +1,5 @@
+import '../models/budget_model.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Budget extends StatefulWidget {
   final Function save;
@@ -13,21 +13,12 @@ class Budget extends StatefulWidget {
 class _BudgetState extends State<Budget> {
   final _budgetController = TextEditingController();
 
-  Future<double> _readBudget() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.containsKey('my_double_key')
-        ? print('contains key')
-        : print('missing key');
-    var _budgetFuture = prefs.getDouble('my_double_key') ?? 1000.0;
-    return _budgetFuture;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         FutureBuilder<double>(
-          future: _readBudget(),
+          future: BudgetModel.readBudget(),
           builder: (context, snapshot) {
             return snapshot.hasData
                 ? Card(
@@ -38,7 +29,7 @@ class _BudgetState extends State<Budget> {
                           width: 150,
                           child: TextField(
                             decoration: InputDecoration(
-                              labelText: 'Set Budget',
+                              labelText: 'Set Daily Budget',
                               hintText: 'current: ${snapshot.data}',
                             ),
                             controller: _budgetController,
