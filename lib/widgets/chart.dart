@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/transactions.dart';
+import '../models/budget_model.dart';
 
 class Chart extends StatelessWidget {
   final List<Transactions> recentTransactions;
@@ -54,19 +55,40 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(15),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: groupedTransactionValues.map((e) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                  e['day'],
-                  e['amount'],
-                  totalSpending == 0
-                      ? 0.0
-                      : (e['amount'] as double) / totalSpending),
-            );
-          }).toList(),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: groupedTransactionValues.map((e) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                    e['day'],
+                    e['amount'],
+                    totalSpending == 0
+                        ? 0.0
+                        : (e['amount'] as double) / totalSpending,
+                  ),
+                );
+              }).toList(),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
+                child: FutureBuilder(
+                  future: BudgetModel.budgetModel,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? Text(
+                            'Daily budget: \$${snapshot.data.toStringAsFixed(2)}',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        : {};
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

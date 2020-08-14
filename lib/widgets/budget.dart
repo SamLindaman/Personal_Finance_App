@@ -2,10 +2,6 @@ import '../models/budget_model.dart';
 import 'package:flutter/material.dart';
 
 class Budget extends StatefulWidget {
-  final Function save;
-
-  Budget(this.save);
-
   @override
   _BudgetState createState() => _BudgetState();
 }
@@ -30,7 +26,8 @@ class _BudgetState extends State<Budget> {
                           child: TextField(
                             decoration: InputDecoration(
                               labelText: 'Set Daily Budget',
-                              hintText: 'current: ${snapshot.data}',
+                              hintText:
+                                  'current: ${snapshot.data.toStringAsFixed(2)}',
                             ),
                             controller: _budgetController,
                             keyboardType:
@@ -49,7 +46,7 @@ class _BudgetState extends State<Budget> {
                             if (amountEntered == 0) {
                               return;
                             } else {
-                              widget.save(amountEntered);
+                              BudgetModel.saveBudget(amountEntered);
                               Navigator.of(context).pop();
                             }
                           },

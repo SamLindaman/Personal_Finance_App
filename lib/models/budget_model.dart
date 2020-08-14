@@ -5,10 +5,13 @@ class BudgetModel {
 
   static Future<double> readBudget() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.containsKey('my_double_key')
-        ? print('contains key')
-        : print('missing key');
-    var _budgetFuture = prefs.getDouble('my_double_key') ?? 1000.0;
+    var _budgetFuture = prefs.getDouble('my_double_key') ?? 25.0;
     return _budgetFuture;
+  }
+
+  static Future<void> saveBudget(double value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'my_double_key';
+    prefs.setDouble(key, value);
   }
 }

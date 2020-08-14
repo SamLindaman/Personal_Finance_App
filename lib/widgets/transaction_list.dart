@@ -1,11 +1,13 @@
 import 'package:PersonalFinance/models/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../models/transactions.dart';
 
 // ignore: must_be_immutable
 class TransactionList extends StatelessWidget {
   final List<Transactions> transactions;
   Function deleteTx;
+  Color color1;
 
   TransactionList(this.transactions, this.deleteTx);
 
@@ -40,6 +42,17 @@ class TransactionList extends StatelessWidget {
               child: ListView.builder(
                 physics: ScrollPhysics(),
                 itemBuilder: (context, index) {
+                  if (transactions[index].expenseType == 1) {
+                    color1 = Colors.green;
+                  } else if (transactions[index].expenseType == 2) {
+                    color1 = Colors.black87;
+                  } else if (transactions[index].expenseType == 3) {
+                    color1 = Colors.amber;
+                  } else if (transactions[index].expenseType == 4) {
+                    color1 = Colors.blue;
+                  } else {
+                    color1 = Theme.of(context).primaryColor;
+                  }
                   return Card(
                     elevation: 5,
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
@@ -49,9 +62,10 @@ class TransactionList extends StatelessWidget {
                           child: Text(
                             '\$${transactions[index].amount.toStringAsFixed(2)}',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Theme.of(context).primaryColor),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: color1,
+                            ),
                           ),
                           padding: EdgeInsets.all(15),
                           margin:
@@ -59,9 +73,7 @@ class TransactionList extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Theme.of(context).accentColor,
                             border: Border.symmetric(
-                              horizontal: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
+                              horizontal: BorderSide(color: color1, width: 2),
                             ),
                           ),
                         ),
@@ -89,8 +101,7 @@ class TransactionList extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.delete_forever,
-                            //color: Colors.grey,
-                            color: Theme.of(context).primaryColor,
+                            color: color1,
                           ),
                           onPressed: () {
                             deleteTx(transactions[index].id);

@@ -7,7 +7,7 @@ class DatabaseHelper {
     return sql.openDatabase(path.join(dbPath, 'transactions.db'),
         onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE transactions(_id INTEGER PRIMARY KEY, title TEXT NOT NULL, amount REAL NOT NULL, date TEXT NOT NULL)');
+          'CREATE TABLE transactions(_id INTEGER PRIMARY KEY, title TEXT NOT NULL, amount REAL NOT NULL, expenseType INTEGER NOT NULL, date TEXT NOT NULL)');
     }, version: 1);
   }
 

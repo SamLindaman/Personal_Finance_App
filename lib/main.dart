@@ -3,14 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import './widgets/budget.dart';
 import './widgets/chart.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
+
 import './models/transactions.dart';
 import './models/database_helper.dart';
-import './widgets/budget.dart';
 
 // ignore: todo
 // TODO: Set a weekly budget and color code transaction amounts in the chart
@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
+  // Call this to use the database
   Future<void> fetchAndSetTransactions() async {
     final dataList = await DatabaseHelper.getTransactionFromDB('transactions');
     _transactions = dataList
@@ -63,14 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
             id: e['_id'],
             title: e['title'],
             amount: e['amount'],
+            expenseType: e['expenseType'],
             date: DateTime.parse(e['date'])))
         .toList();
     //Set State is used for populating the list on initial build
     setState(() {});
   }
 
+  // Saves new transaction to the database, as well as adding it to the temporary
+  // list of transactions that is used to update the transactions_list widget
+  // to display the transaction cards on the screen.
+
   Future<void> _addNewTransaction(
-      String newTitle, double newAmount, DateTime datePicked) async {
+      String newTitle, double newAmount, DateTime datePicked, int exp) async {
     int newId = range.nextInt(900000) + 100000;
     DatabaseHelper.insert(
       'transactions',
@@ -78,7 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
         '_id': newId,
         'title': newTitle,
         'amount': newAmount,
-        'date': datePicked.toIso8601String()
+        'expenseType': exp,
+        'date': datePicked.toIso8601String(),
       },
     );
     print('inserted $newTitle to db');
@@ -88,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: newAmount,
       date: datePicked,
       id: newId,
+      expenseType: exp,
     );
 
     setState(() {
@@ -95,6 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // remove transaction from the database as well as from the temp transaction
+  // list and update the screen to no longer display this transaction
   void _deleteTransaction(int id) async {
     await DatabaseHelper.delete(id);
     print('deleted transaction with id: $id');
@@ -104,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // call this function to open the bottom slider sheet and display the New Transaction
+  // widget within this sheet to add a new transaction
   void startAddNewTranaction(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -113,27 +125,18 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  // call this function to display the bottom slider sheet and show the
+  // Budget widget within this sheet to save a new budget value
   void _startSaveBudget(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
-        return Budget(_saveBudget);
+        return Budget();
       },
     );
   }
 
-  Future<void> _saveBudget(double value) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'my_double_key';
-    prefs.setDouble(key, value);
-
-    if (prefs.containsKey(key)) {
-      print('saved $value');
-    } else {
-      print("ehhhh");
-    }
-  }
-
+  // BUILD
   @override
   Widget build(BuildContext context) {
     //get info from database and fill _transactions list
@@ -153,17 +156,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
+    // Layout of the screen
     return Scaffold(
       appBar: _appBarVar,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-                // height: (MediaQuery.of(context).size.height -
-                //         _appBarVar.preferredSize.height -
-                //         MediaQuery.of(context).padding.top) *
-                //     0.25,
-                child: Chart(_transactions)),
+            Container(child: Chart(_transactions)),
             Container(
               child: TransactionList(_recentTransactions, _deleteTransaction),
             ),
