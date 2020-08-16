@@ -72,21 +72,25 @@ class Chart extends StatelessWidget {
                 );
               }).toList(),
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
-                child: FutureBuilder(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                FutureBuilder(
                   future: BudgetModel.budgetModel,
                   builder: (context, snapshot) {
                     return snapshot.hasData
                         ? Text(
                             'Daily budget: \$${snapshot.data.toStringAsFixed(2)}',
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           )
                         : {};
                   },
                 ),
-              ),
+                Text(
+                  "Weekly Spending: $totalSpending",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                )
+              ],
             ),
           ],
         ),
